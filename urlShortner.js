@@ -1,8 +1,10 @@
 function shorten() {
 debugger;
 let url = document.getElementById("uRLToTest").value
+let output = document.getElementById("uRLOutput")
 let token = map(url)
-makelURL(token)
+
+output.innerText = makelURL(token)
 }
 function createToken() {
 let charMap = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -19,22 +21,24 @@ const urlMap = new Map()
 function map(url) {
 let token = createToken()
 
-if(urlMap.has(token)){
-  if(url != urlMap.get(token)){
+if(localStorage.getItem(token)){
+  if(url != localStorage.getItem(token)){
   map()
   }
 } else {
-urlMap.set(token,url)
+localStorage.setItem(token,url)
 return token;
   }
 }
 
 function makelURL(token){
-let lURL = window.location.protocol + "//" + "littleURLcreator/" + token;
-let output = document.getElementById("uRLOutput")
-output.innerText = lURL
+let lURL = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + token;
+return lURL;
 }
 
-function makeUseful(){
-
+function extractToken(lURL){
+let extractedToken = window.location.search
+extractedToken = extractedToken.slice(1)
+let open = localStorage.getItem(extractedToken)
+window.open(open)
 }
